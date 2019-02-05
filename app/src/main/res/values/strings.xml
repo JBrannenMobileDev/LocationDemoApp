@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LocationDemoApp</string>
+    <string name="interval_time_in_minutes">60</string>
+    <string name="Task_1_toast">Task #1 Completed</string>
+</resources>

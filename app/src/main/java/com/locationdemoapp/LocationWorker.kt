@@ -11,9 +11,15 @@ class LocationWorker (context : Context, params : WorkerParameters) : Worker(con
         const val TAG = "location_worker"
     }
 
+
+
+
+    /**
+     * Every time this LocationWorker class is triggered to run, doWork() will get called on a background thread.
+     */
     override fun doWork(): Result {
         return try {
-            LocationManager.getLocation(applicationContext)
+            LocationUtil.fetchAndSaveLocation(applicationContext)
             Result.success()
         } catch (e: Exception) {
             Log.e(TAG, "Get location failed", e)

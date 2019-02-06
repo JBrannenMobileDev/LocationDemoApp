@@ -7,13 +7,17 @@ import android.widget.Toast
 import com.google.android.gms.location.LocationServices
 import java.lang.Exception
 
-class LocationManager {
+class LocationUtil {
     companion object {
-        var TAG = "LocationManager"
+        var TAG = "LocationUtil"
 
-        fun getLocation(applicationContext: Context){
 
-            if (PermissionCheckUtil.checkAccessCoarseLocationPermission(applicationContext)) {
+        /**
+         * Fetches the last known location using the FusedLocationProviderClient after first checking for permission.
+         */
+        fun fetchAndSaveLocation(applicationContext: Context){
+
+            if (PermissionCheckUtil.checkAccessFineLocationPermission(applicationContext)) {
                 LocationServices
                     .getFusedLocationProviderClient(applicationContext)
                     .lastLocation

@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">LocationDemoApp</string>
-    <string name="interval_time_in_minutes">60</string>
     <string name="Task_1_toast">Task #1 Completed</string>
+    <string name="GPS_TURNED_OFF_TOAST">Please enable location services in your settings for this app to work.</string>
 </resources>

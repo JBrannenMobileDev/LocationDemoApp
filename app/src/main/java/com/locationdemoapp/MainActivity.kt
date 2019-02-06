@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(widget: View) {
                 if(PermissionCheckUtil.checkAccessFineLocationPermission(applicationContext)) {
                     Toast.makeText(applicationContext, R.string.Task_1_toast, Toast.LENGTH_SHORT).show()
-                    startBackgroundTask()
+                    startPeriodicWork()
                 }else{
                     ActivityCompat.requestPermissions(this@MainActivity,
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), ACCESS_LOCATION_REQUEST_CODE)
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             ACCESS_LOCATION_REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    startBackgroundTask()
+                    startPeriodicWork()
                 } else {
                     // permission denied!
                 }
@@ -119,8 +119,16 @@ class MainActivity : AppCompatActivity() {
      * Builds the locationWork object with interval time and queues the work with the WorkManager.
      * PeriodicWorkRequests have a minimum time interval of 15 min. Therefore with this approach i am not able to trigger the task every 1min.
      * The enqueueUniquePeriodicWork ensures that there is only one running worker in the WorkManager at a time.
+     *
+     * The WorkManager under the hood uses JobScheduler, Firebase JobDispatcher, and AlarmManager depending on the Android API levels.
+     * JobScheduler available with Android Lollipop and above (21+)
+     * AlarmManager available with all API versions
+     * Firebase JobDispatcher available with API 14+ (Recommended by google as best option to use)
+     *
+     * This means that we no longer need to check API levels to decide how to handle the background Scheduling.
+     * Less code = fewer bugs = easier to maintain.
      */
-    private fun startBackgroundTask() {
+    private fun startPeriodicWork() {
         var intervalValue = if(BuildConfig.DEBUG) 15L else 60L
         val locationWork = PeriodicWorkRequest.Builder(LocationWorker::class.java, intervalValue, TimeUnit.MINUTES).addTag(LocationWorker.TAG).build()
         WorkManager.getInstance().enqueueUniquePeriodicWork(LocationWorker.TAG, ExistingPeriodicWorkPolicy.REPLACE, locationWork)

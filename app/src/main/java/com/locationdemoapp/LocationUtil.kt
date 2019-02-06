@@ -24,6 +24,12 @@ class LocationUtil {
                     .addOnSuccessListener { location: Location? ->
                         if (location != null) {
                             Toast.makeText(applicationContext, location.toString(), Toast.LENGTH_SHORT).show()
+                            //TODO Task #4: Local Storage Options
+                            //TODO Option 1: Using Room, an Android Architecture component for persisting data. Room is a wrapper around SQLight.
+                            //TODO Option 2: Using Realm, a noSQL option to persist data
+                            //TODO Option 3: Storing desired data in a JSON string and persisting it into SharedPreferences.
+                            //TODO
+                            //TODO The best option depends on the requirements. How much is stored, how the data needs to be retrieved, ease of use.
                             Log.d(TAG, location.toString())
                         }
                     }
